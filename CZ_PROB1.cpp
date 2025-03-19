@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const int MAXP = 8000;
+const int MAXP = 10000;
 // knowing that 500th prime no.  which can be represented as a sum of two squares will fall under 8000th normal prime number
 bool squares[MAXP];
 int square_primes[MAXP];
@@ -32,23 +32,44 @@ void sieve(){
     }
 }
 
-// int rec(int sum_left )
+int dp[MAXP+1][4];
+
+int rec(int sum_left, int k){
+    //pruning
+    // base case
+    if(sum_left==0)return 1;
+    if(k==1) return 1;
+    if(k<=0)return 0;
+    // cache check
+    if(dp[sum_left][k]!=-1) return dp[sum_left][k];
+    // compute and transiiotn
+    int ans=0;
+    ans = rec(sum_left,k-1);
+    if(sum_left>=k){
+        ans += rec(sum_left-k, k);
+    }
+    // save and return
+    return dp[sum_left][k] = ans;
+}
 
 void solve()
 {
     sieve();
     int n,k;
     cin>>n>>k;
-    for(int i=0; i<MAXP; i++)cout<<square_primes[i]<<endl;
+    // for(int i=0; i<MAXP; i++)cout<<square_primes[i]<<endl;
+    cout<<rec(square_primes[n-1],k);
 }
 
 int main()
 {
     int tt;
     cin >> tt;
+    memset(dp,-1,sizeof(dp));
     while (tt--)
     {
         solve();
+        if(tt!=0)cout<<endl;
     }
     return 0;
 }
