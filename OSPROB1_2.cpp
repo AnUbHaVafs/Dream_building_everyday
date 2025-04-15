@@ -6,8 +6,6 @@ int n;
 int hours[125];
 int dp[125];
 
-// TLE code
-
 int rec(int level)
 { 
     if(level>=n-1){
@@ -22,8 +20,8 @@ int rec(int level)
     int taken = 0;
     for(int i=level; i<n; i++){
         taken += hours[i];
-        int pos = i+1, mine = 0;
-        for(; mine + hours[pos] < taken; pos++){
+        int mine = 0;
+        for(int pos = i+1; pos<n && mine + hours[pos] < taken; pos++){
             mine += hours[pos];
             ans = max(ans, mine + rec(pos+1));
         }
